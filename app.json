@@ -1,5 +1,8 @@
 {
   "expo": {
+    "packagerOpts": {
+      "sourceExts": ["js", "json", "ts", "tsx", "cjs"]
+    },
     "name": "ewe-note-native",
     "slug": "ewe-note-native",
     "version": "1.0.0",
@@ -11,9 +14,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.jacobcoro.ewenotenativey"
