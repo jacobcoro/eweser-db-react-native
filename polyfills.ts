@@ -1,4 +1,4 @@
-import { polyfillWebCrypto } from 'expo-standard-web-crypto';
+import { polyfillWebCrypto } from './expo-standard-web-crypto';
 
 polyfillWebCrypto();
 import * as storage from 'expo-secure-store';

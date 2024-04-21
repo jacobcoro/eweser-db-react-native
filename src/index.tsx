@@ -7,7 +7,7 @@ import { localStoragePolyfill } from '../polyfills';
 
 const randomRoomId = crypto.randomUUID();
 const existingRoomId = localStoragePolyfill.getItem('roomId');
-const roomId = existingRoomId || crypto.randomUUID();
+const roomId = existingRoomId || randomRoomId;
 console.log({ existingRoomId, roomId, randomRoomId });
 localStoragePolyfill.setItem('roomId', roomId);
 
