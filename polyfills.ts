@@ -1,15 +1,13 @@
 import { polyfillWebCrypto } from 'expo-standard-web-crypto';
 
 polyfillWebCrypto();
+import * as storage from 'expo-secure-store';
 
-import SyncStorage from 'sync-storage';
-
-export const localStoragePolyfill: Storage = {
-  getItem: (key: string) => SyncStorage.get(key),
-  setItem: (key: string, value: string) => SyncStorage.set(key, value),
-  removeItem: (key: string) => SyncStorage.remove(key),
-  length: SyncStorage.getAllKeys().length,
-  clear: () =>
-    SyncStorage.getAllKeys().forEach((key) => SyncStorage.remove(key)),
-  key: (index: number) => SyncStorage.getAllKeys()[index],
+export const localStoragePolyfill = {
+  getItem: (key: string) => storage.getItem(key),
+  setItem: (key: string, value: string) => storage.setItem(key, value),
+  removeItem: (key: string) => {
+    storage.setItem(key, '');
+    storage.deleteItemAsync(key);
+  },
 };

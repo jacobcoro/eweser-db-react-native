@@ -5,12 +5,18 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { localStoragePolyfill } from '../polyfills';
 
+const randomRoomId = crypto.randomUUID();
+const existingRoomId = localStoragePolyfill.getItem('roomId');
+const roomId = existingRoomId || crypto.randomUUID();
+console.log({ existingRoomId, roomId, randomRoomId });
+localStoragePolyfill.setItem('roomId', roomId);
+
 export default function Main() {
   const [db, setDb] = useState<Database | null>(null);
   useEffect(() => {
     setDb(
       new Database({
-        localStoragePolyfill,
+        localStoragePolyfill: localStoragePolyfill as any,
       })
     );
   }, []);

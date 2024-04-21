@@ -3,6 +3,14 @@
     "packagerOpts": {
       "sourceExts": ["js", "json", "ts", "tsx", "cjs"]
     },
+    "plugins": [
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
+        }
+      ]
+    ],
     "name": "ewe-note-native",
     "slug": "ewe-note-native",
     "version": "1.0.0",
@@ -17,7 +25,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jacobcoro.ewenotenativey"
+      "bundleIdentifier": "com.jacobcoro.ewenotenative",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
