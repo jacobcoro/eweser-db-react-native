@@ -1,5 +1,6 @@
 import { getRandomValues as expoCryptoGetRandomValues } from 'expo-crypto';
 import uuid from 'react-native-uuid';
+import { Platform } from 'react-native';
 
 const MAX_RANDOM_BYTES = 65536;
 type IntegerArray =
@@ -82,7 +83,7 @@ class QuotaExceededError extends Error {
   code = 22; // QUOTA_EXCEEDED_ERR
 }
 
-class Crypto {
+class CryptoFill {
   getRandomValues<TArray extends ArrayBufferView>(values: TArray): TArray {
     return getRandomValues(values);
   }
@@ -91,12 +92,16 @@ class Crypto {
   }
 }
 
-const webCrypto = typeof crypto !== 'undefined' ? crypto : new Crypto();
-
-export default webCrypto;
+const webCrypto = typeof crypto !== 'undefined' ? crypto : new CryptoFill();
 
 export function polyfillWebCrypto(): void {
-  if (typeof crypto === 'undefined') {
+  console.log('Polyfilling web crypto', typeof crypto, typeof webCrypto);
+  if (
+    Platform.OS !== 'web' ||
+    typeof crypto === 'undefined' ||
+    typeof crypto.randomUUID === 'undefined'
+  ) {
+    console.log('Polyfilling web crypto 2');
     Object.defineProperty(window, 'crypto', {
       configurable: true,
       enumerable: true,
