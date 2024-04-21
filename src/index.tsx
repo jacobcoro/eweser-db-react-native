@@ -2,7 +2,14 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Database, Documents, Note, Registry, Room } from '@eweser/db';
 import * as config from './config';
-import { Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Button,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { StatusBar } from './StatusBar';
 import { localStoragePolyfill } from '../polyfills';
 import styles from './styles';
@@ -12,18 +19,7 @@ const existingRoomId = localStoragePolyfill.getItem('roomId');
 const roomId = existingRoomId || randomRoomId;
 console.log({ existingRoomId, roomId, randomRoomId });
 localStoragePolyfill.setItem('roomId', roomId);
-const userAgent = navigator.userAgent;
-let deviceType = 'Unknown';
-
-if (userAgent.includes('iPhone')) {
-  deviceType = 'iPhone';
-} else if (userAgent.includes('Android')) {
-  deviceType = 'Android';
-} else if (userAgent.includes('Windows')) {
-  deviceType = 'Windows';
-} else if (userAgent.includes('Macintosh')) {
-  deviceType = 'Macintosh';
-}
+const deviceType = Platform.OS;
 
 const collectionKey = 'notes';
 /** A room is a group of documents that all share a common `Collection` type, like Note. Sharing and view permissions can be set on a per room basis */
@@ -56,6 +52,7 @@ const initialRooms: Registry = [
 ];
 
 const db = new Database({
+  providers: ['IndexedDB'],
   authServer: config.AUTH_SERVER,
   // set `logLevel` to 0 to see debug messages in the console
   logLevel: 0,
@@ -64,7 +61,11 @@ const db = new Database({
   initialRooms,
   localStoragePolyfill: localStoragePolyfill as any,
 });
-const loginUrl = db.generateLoginUrl({ name: 'Basic Example App' });
+const loginUrl = db.generateLoginUrl({
+  name: 'Basic Example App',
+  redirect: 'asdfasd',
+  domain: 'asdfasdf',
+});
 
 const App = () => {
   const [loaded, setLoaded] = useState(false);
@@ -80,7 +81,7 @@ const App = () => {
       setHasToken(true);
     }
     // eslint-disable-next-line react-hooks/exhausViewe-deps
-  }, [hasToken, window.location.search]); // token will be in the query string after login redirect
+  }, [hasToken]); // token will be in the query string after login redirect
 
   useEffect(() => {
     if (loggedIn || !hasToken) {
