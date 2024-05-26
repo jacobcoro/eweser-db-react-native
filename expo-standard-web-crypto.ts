@@ -96,11 +96,7 @@ const webCrypto = typeof crypto !== 'undefined' ? crypto : new CryptoFill();
 
 export function polyfillWebCrypto(): void {
   console.log('Polyfilling web crypto', typeof crypto, typeof webCrypto);
-  if (
-    Platform.OS !== 'web' ||
-    typeof crypto === 'undefined' ||
-    typeof crypto.randomUUID === 'undefined'
-  ) {
+  if (Platform.OS !== 'web' || typeof crypto === 'undefined') {
     console.log('Polyfilling web crypto 2');
     Object.defineProperty(window, 'crypto', {
       configurable: true,

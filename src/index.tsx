@@ -6,6 +6,7 @@ import { Button, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from './StatusBar';
 import { localStoragePolyfill } from '../polyfills';
 import styles from './styles';
+import { OPSQLitePersistence } from 'y-op-sqlite';
 
 const randomRoomId = crypto.randomUUID();
 const existingRoomId = localStoragePolyfill.getItem('roomId');
@@ -56,6 +57,9 @@ const initialRooms: Registry = [
 ];
 
 const db = new Database({
+  providers: ['IndexedDB'],
+  indexedDBProviderPolyfill: (docName, yDoc) =>
+    new OPSQLitePersistence(docName, yDoc) as any,
   authServer: config.AUTH_SERVER,
   // set `logLevel` to 0 to see debug messages in the console
   logLevel: 0,
